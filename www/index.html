@@ -1,25 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>TodoApp</title>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Liste de tâches</title>
-
-    <script src="assets/lib/onsen/js/onsenui.js"></script>
-
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/controllers.js"></script>
-    <script src="assets/js/services.js"></script>
-    <script>
-        ons.platform.select('android');
-    </script>
-    <link rel="stylesheet" href="assets/lib/onsen/css/onsenui.css">
-    <link rel="stylesheet" href="assets/lib/onsen/css/onsen-css-components.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
+      <link rel="stylesheet" href="assets/lib/onsen/css/onsenui.css">
+      <link rel="stylesheet" href="assets/lib/onsen/css/onsen-css-components.css">
+      <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
     <!-- First navigation component: Navigator. This will remain always on top of the app. -->
     <ons-navigator id="myNavigator" page="splitter.html">
     </ons-navigator>
@@ -47,11 +36,11 @@
                         <ons-icon icon="ion-navicon, material:md-menu" size="32px, material:24px"></ons-icon>
                     </ons-toolbar-button>
                 </div>
-                <div class="center">À faire</div>
+                <div class="center">TodoApp | CHAGRAS - SAYER</div>
                 <div class="right">
                     <!-- Toolbar-button  only visible for iOS/other. -->
                     <ons-if platform="ios other">
-                        <ons-toolbar-button component="button/new-task">Nouvelle</ons-toolbar-button>
+                        <ons-toolbar-button component="button/new-task">New</ons-toolbar-button>
                     </ons-if>
                 </div>
             </ons-toolbar>
@@ -65,14 +54,19 @@
 
             <!-- Auto-positioned Tabbar: top on Android, bottom on iOS/other. -->
             <ons-tabbar id="myTabbar" position="auto">
-                <ons-tab page="html/pending_tasks.html" label="En attente" active>
+                <ons-tab page="html/pending_tasks.html" label="Pending" active>
                 </ons-tab>
-                <ons-tab page="html/completed_tasks.html" label="Finies">
+                <ons-tab page="html/completed_tasks.html" label="Completed">
                 </ons-tab>
             </ons-tabbar>
         </ons-page>
     </template>
 
-</body>
+    <script src="assets/lib/onsen/js/onsenui.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script src="assets/js/controllers.js"></script>
+    <script>ons.platform.select('android');</script>
+  </body>
 
 </html>
