@@ -13,7 +13,7 @@ myApp.services = {
     create: function(data) {
       // Task item template.
       var taskItem = ons.createElement(
-        '<ons-list-item tappable category="' + myApp.services.categories.parseId(data.category)+ '">' +
+        '<ons-list-item tappable component="task" category="' + myApp.services.categories.parseId(data.category)+ '">' +
           '<label class="left">' +
            '<ons-checkbox></ons-checkbox>' +
           '</label>' +
@@ -130,6 +130,11 @@ myApp.services = {
         // Check if the category has no items and remove it in that case.
         myApp.services.categories.updateRemove(taskItem.data.category);
       });
+    },
+
+    removeAll: function(){
+      let tasks = document.querySelectorAll('[component="task"]');
+      tasks.forEach((task) => myApp.services.tasks.remove(task));
     }
   },
 

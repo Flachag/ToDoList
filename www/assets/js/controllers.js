@@ -18,6 +18,19 @@ myApp.controllers = {
       element.show && element.show(); // Fix ons-fab in Safari.
     });
 
+    // Set button functionality to push delete all tasks.
+    page.querySelector('[component="button/delete-all"').onclick = function() {
+      ons.notification.confirm(
+          {
+            title: 'Tout supprimer ?',
+            message: 'Toutes les données seront supprimées.',
+            buttonLabels: ['Annuler', 'Valider']
+          }
+      ).then((index) => {
+        if (index === 1) myApp.services.tasks.removeAll();
+      })
+    };
+
     // Change tabbar animation depending on platform.
     page.querySelector('#myTabbar').setAttribute('animation', ons.platform.isAndroid() ? 'slide' : 'none');
   },
