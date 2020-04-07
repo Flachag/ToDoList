@@ -1,5 +1,7 @@
 window.myApp = {};
 
+var created = false;
+
 document.addEventListener('init', function(event) {
   var page = event.target;
 
@@ -8,16 +10,31 @@ document.addEventListener('init', function(event) {
     myApp.controllers[page.id](page);
   }
 
+  $('#completed-list').ready(createTasks);
+  $('#progress-list').ready(createTasks);
+  $('#pending-list').ready(createTasks);
+
   // Fill the lists with initial data when the pages we need are ready.
   // This only happens once at the beginning of the app.
-  if (page.id === 'menuPage' || page.id === 'pendingTasksPage') {
-    if (document.querySelector('#menuPage')
-      && document.querySelector('#pendingTasksPage')
-      && !document.querySelector('#pendingTasksPage ons-list-item')
-    ) {
-      myApp.services.fixtures.forEach(function(data) {
-        myApp.services.tasks.create(data);
-      });
+
+  function createTasks() {
+    if (page.id === 'menuPage' || page.id === 'pendingTasksPage') {
+      if (document.querySelector('#menuPage')
+          && document.querySelector('#pendingTasksPage')
+          && !document.querySelector('#pendingTasksPage ons-list-item')
+          && document.querySelector('#progress-list')
+          && document.querySelector('#completed-list')
+          && !created
+      ) {
+
+        if (isNewSession()) {
+          myApp.services.defaultData.forEach(data => addInStorage(data));
+        }
+
+        created = true;
+
+        getAllTasks().forEach(data => myApp.services.tasks.create(data));
+      }
     }
   }
 });
