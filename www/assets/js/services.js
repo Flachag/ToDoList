@@ -32,8 +32,34 @@ myApp.services = {
       // Add 'completion' functionality when the checkbox changes.
       taskItem.data.onCheckboxChange = function(event) {
         myApp.services.animators.swipe(taskItem, function() {
-          var listId = (taskItem.parentElement.id === 'pending-list' && event.target.checked) ? '#completed-list' : '#pending-list';
+          let listId = '#pending-list';
+          let newStatus = 'pending';
+          if (taskItem.parentElement.id === 'pending-list' && event.target.checked) {
+            listId = '#progress-list';
+            newStatus = 'progress';
+            event.target.checked = false;
+          }
+          if (taskItem.parentElement.id === 'progress-list' && event.target.checked){
+            listId = "#completed-list";
+            newStatus = 'completed';
+          }
+
+          //var listId = (taskItem.parentElement.id === 'pending-list' && event.target.checked) ? '#completed-list' : '#pending-list';
           document.querySelector(listId).appendChild(taskItem);
+
+          //update local storage
+          let newData = {
+            title: data.title,
+            category: data.category,
+            description: data.description,
+            urgent: data.urgent,
+            highlight: data.highlight,
+            status: newStatus,
+            deadline: data.deadline,
+            sortIndex: data.sortIndex
+          };
+          update(newData);
+
         });
       };
 
