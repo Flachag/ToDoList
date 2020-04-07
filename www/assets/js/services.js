@@ -33,8 +33,8 @@ myApp.services = {
             taskItem.data = data;
 
             // Add 'completion' functionality when the checkbox changes.
-            taskItem.data.onCheckboxChange = function(event) {
-                myApp.services.animators.swipe(taskItem, function() {
+            taskItem.data.onCheckboxChange = function (event) {
+                myApp.services.animators.swipe(taskItem, function () {
                     let listId = '#pending-list';
                     let newStatus = 'pending';
                     if (taskItem.parentElement.id === 'pending-list' && event.target.checked) {
@@ -42,7 +42,7 @@ myApp.services = {
                         newStatus = 'progress';
                         event.target.checked = false;
                     }
-                    if (taskItem.parentElement.id === 'progress-list' && event.target.checked){
+                    if (taskItem.parentElement.id === 'progress-list' && event.target.checked) {
                         listId = "#completed-list";
                         newStatus = 'completed';
                     }
@@ -67,7 +67,7 @@ myApp.services = {
             taskItem.addEventListener('change', taskItem.data.onCheckboxChange);
 
             // Add button functionality to remove a task.
-            taskItem.querySelector('.right').onclick = function() {
+            taskItem.querySelector('.right').onclick = function () {
                 myApp.services.tasks.remove(taskItem);
             };
 
@@ -93,8 +93,8 @@ myApp.services = {
             }
 
             // Insert urgent tasks at the top and non urgent tasks at the bottom.
-            var pendingList = document.querySelector('#pending-list');
-            pendingList.insertBefore(taskItem, taskItem.data.urgent ? pendingList.firstChild : null);
+            let pendingList = document.querySelector('#' + data.status + '-list');
+            pendingList.appendChild(taskItem);
         },
 
         // Modifies the inner data and current view of an existing task.
@@ -255,62 +255,22 @@ myApp.services = {
     ////////////////////////
     // Initial Data Service //
     ////////////////////////
-    fixtures: [
+    defaultData: [
         {
-            title: 'Download OnsenUI',
-            category: 'Programming',
-            description: 'Some description.',
+            title: 'Test !',
+            category: 'Cat1',
+            description: 'description 1',
             highlight: false,
-            urgent: false
+            urgent: true,
+            status: "pending"
         },
         {
-            title: 'Install Monaca CLI',
-            category: 'Programming',
-            description: 'Some description.',
+            title: 'Rendu intermédiaire',
+            category: 'Cat1',
+            description: 'description 2',
             highlight: false,
-            urgent: false
-        },
-        {
-            title: 'Star Onsen UI repo on Github',
-            category: 'Super important',
-            description: 'Some description.',
-            highlight: false,
-            urgent: false
-        },
-        {
-            title: 'Register in the community forum',
-            category: 'Super important',
-            description: 'Some description.',
-            highlight: false,
-            urgent: false
-        },
-        {
-            title: 'Send donations to Fran and Andreas',
-            category: 'Super important',
-            description: 'Some description.',
-            highlight: false,
-            urgent: false
-        },
-        {
-            title: 'Profit',
-            category: '',
-            description: 'Some description.',
-            highlight: false,
-            urgent: false
-        },
-        {
-            title: 'Visit Japan',
-            category: 'Travels',
-            description: 'Some description.',
-            highlight: false,
-            urgent: false
-        },
-        {
-            title: 'Enjoy an Onsen with Onsen UI team',
-            category: 'Personal',
-            description: 'Some description.',
-            highlight: false,
-            urgent: false
+            urgent: false,
+            status: "pending"
         }
     ]
 };

@@ -62,6 +62,7 @@ myApp.controllers = {
                         {
                             title: newTitle,
                             category: page.querySelector('#category-input').value,
+                            status: 'pending',
                             description: page.querySelector('#description-input').value,
                             highlight: page.querySelector('#highlight-input').checked,
                             urgent: page.querySelector('#urgent-input').checked
@@ -104,9 +105,9 @@ myApp.controllers = {
                 // If input title is not empty, ask for confirmation before saving.
                 ons.notification.confirm(
                     {
-                        title: 'Save changes?',
-                        message: 'Previous data will be overwritten.',
-                        buttonLabels: ['Discard', 'Save']
+                        title: 'Enregistrer?',
+                        message: 'Les données précedentes seront écrasées',
+                        buttonLabels: ['Annuler', 'Sauvegarder']
                     }
                 ).then(function (buttonIndex) {
                     if (buttonIndex === 1) {
@@ -116,7 +117,8 @@ myApp.controllers = {
                                 title: newTitle,
                                 category: page.querySelector('#category-input').value,
                                 description: page.querySelector('#description-input').value,
-                                ugent: element.data.urgent,
+                                urgent: element.data.urgent,
+                                status: page.data.element.data.status,
                                 highlight: page.querySelector('#highlight-input').checked
                             }
                         );
@@ -130,7 +132,7 @@ myApp.controllers = {
 
             } else {
                 // Show alert if the input title is empty.
-                ons.notification.alert('You must provide a task title.');
+                ons.notification.alert('Le titre ne peut pas être vide.');
             }
         };
     }
