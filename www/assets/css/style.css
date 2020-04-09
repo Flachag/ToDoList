@@ -16,7 +16,6 @@ ons-splitter-side[side="left"][animation="overlay"] {
 }
 
 .highlight {
-  background-color: lightyellow;
   color: rgba(255, 0, 0, 0.7);
 }
 
@@ -42,7 +41,6 @@ ons-splitter-side[side="left"][animation="overlay"] {
 #tabbarPage .list-item {
   min-height: 0;
   height: 44px;
-  background-color: white;
   margin: 1px 0 -1px 0;
 }
 
