@@ -76,7 +76,7 @@ myApp.controllers = {
 
                 } else {
                     // Show alert if the input title is empty.
-                    ons.notification.alert('You must provide a task title.');
+                    ons.notification.alert('Impossible de créer une tâche sans nom.');
                 }
                 addInStorage(newTask);
             };
