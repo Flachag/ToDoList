@@ -17,15 +17,15 @@ myApp.services = {
             // Task item template.
             var taskItem = ons.createElement(
                 `<ons-list-item tappable ${isOutdated !== "" ? "status=outdated" : ""} component="task" category="' + myApp.services.categories.parseId(data.category) + '">` +
-                    '<label class="left">' +
-                        '<ons-checkbox></ons-checkbox>' +
-                    '</label>' +
-                    '<div class="center">' +
-                        data.title +
-                    '</div>' +
-                    '<div class="right">' +
-                    '   <ons-icon style="color: grey; padding-left: 4px" icon="ion-ios-trash-outline, material:md-delete"></ons-icon>' +
-                    '</div>' +
+                '<label class="left">' +
+                '<ons-checkbox></ons-checkbox>' +
+                '</label>' +
+                '<div class="center">' +
+                data.title +
+                '</div>' +
+                '<div class="right">' +
+                '   <ons-icon style="color: grey; padding-left: 4px" icon="ion-ios-trash-outline, material:md-delete"></ons-icon>' +
+                '</div>' +
                 '</ons-list-item>'
             );
 
@@ -60,7 +60,9 @@ myApp.services = {
                         description: data.description,
                         urgent: data.urgent,
                         highlight: data.highlight,
-                        status: newStatus
+                        status: newStatus,
+                        deadline: data.deadline,
+                        sortIndex: data.sortIndex
                     };
                     update(newData);
 
@@ -145,10 +147,65 @@ myApp.services = {
 
         removeAllOutdated: function () {
             let tasks = document.querySelectorAll('[component="task"]');
-            tasks.forEach( (task) =>  {
+            tasks.forEach((task) => {
                 if ($(task).attr('status') === 'outdated')
                     myApp.services.tasks.remove(task);
             })
+        },
+
+        sort: function (choice) {
+            let change = (res, a, b) => {
+                if (res === 1 && a.sortIndex < b.sortIndex || res === -1 && a.sortIndex > b.sortIndex) {
+                    let tmp = a.sortIndex;
+                    a.sortIndex = b.sortIndex;
+                    b.sortIndex = tmp;
+                }
+            };
+
+            let tasks = getAllTasks();
+            let testFunc;
+
+            switch (choice) {
+                case 'alpha_asc' : {
+                    testFunc = (a, b) => {
+                        let res = a.title.localeCompare(b.title);
+                        change(res, a, b);
+                        return res;
+                    };
+                    break;
+                }
+
+                case 'alpha_desc' : {
+                    testFunc = (a, b) => {
+                        let res = -a.title.localeCompare(b.title);
+                        change(res, a, b);
+                        return res;
+                    };
+                    break;
+                }
+
+                case 'date_asc' : {
+                    testFunc = (a, b) => {
+                        let res = Date.parse(a.deadline) < Date.parse(b.deadline) ? 1 : -1;
+                        changeTaskSortIndex(res, a, b);
+                        return res;
+                    };
+                    break;
+                }
+
+                case 'date_desc' : {
+                    testFunc = (a, b) => {
+                        let res = Date.parse(a.deadline) < Date.parse(b.deadline) ? -1 : 1;
+                        change(res, a, b);
+                        return res;
+                    };
+                    break;
+                }
+            }
+
+            tasks.sort(testFunc);
+            this.removeAll();
+            tasks.forEach((task) => this.create(task));
         }
     },
 

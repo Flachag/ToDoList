@@ -18,6 +18,25 @@ myApp.controllers = {
             element.show && element.show(); // Fix ons-fab in Safari.
         });
 
+        page.querySelector('[component="button/sort"').onclick = function () {
+            ons.openActionSheet({
+                title: 'Besoin de trier vos tâches ?',
+                cancelable: true,
+                buttons: [
+                    {label: 'Date (Asc)', icon: 'fa-sort-numeric-down'},
+                    {label: 'Date (Desc)', icon: 'fa-sort-numeric-up'},
+                    {label: 'Alphanumérique (Asc)', icon: 'fa-sort-alpha-down'},
+                    {label: 'Alphanumérique (Desc)', icon: 'fa-sort-alpha-up'},
+                    {label: 'Annuler', icon: 'fa-close', modifier: 'destructive'}
+                ]
+            }).then((index) => {
+                if (index === 0) myApp.services.tasks.sort("date_asc");
+                if (index === 1) myApp.services.tasks.sort("date_desc");
+                if (index === 2) myApp.services.tasks.sort("alpha_asc");
+                if (index === 3) myApp.services.tasks.sort("alpha_desc");
+            });
+        }
+
         // Set button functionality to push delete all tasks.
         page.querySelector('[component="button/delete-all"').onclick = function () {
             ons.notification.confirm(
@@ -32,7 +51,7 @@ myApp.controllers = {
         };
 
         // Set button functionality to push delate all outdated tasks.
-        page.querySelector('[component="button/delete-all-outdated-tasks"').onclick = function() {
+        page.querySelector('[component="button/delete-all-outdated-tasks"').onclick = function () {
             ons.notification.confirm(
                 {
                     title: 'Supprimer toutes les tâches passées ?',
@@ -78,7 +97,9 @@ myApp.controllers = {
                             status: 'pending',
                             description: page.querySelector('#description-input').value,
                             highlight: page.querySelector('#highlight-input').checked,
-                            urgent: page.querySelector('#urgent-input').checked
+                            urgent: page.querySelector('#urgent-input').checked,
+                            deadline: page.querySelector('#deadline-input').value,
+                            sortIndex: getNewSortIndex()
                         };
                     myApp.services.tasks.create(newTask);
 
@@ -158,13 +179,13 @@ myApp.controllers = {
         let categories = ['Nouvelle Catégorie'].concat(myApp.services.categories.categories);
         let list = $('#categories-list');
         categories.forEach(current => {
-            let option = $(`<option value=${current}>`);
+            let option = $(`<option value=""${current}>`);
             option.text(current);
 
             list.click(e => {
                 let options = list.prop("options");
                 let selectedOption = options[list.prop("selectedIndex")].value;
-                if (selectedOption === 'Nouvelle'){
+                if (selectedOption === 'Nouvelle') {
                     $('#new-category').removeClass('hidden');
                 } else {
                     $('#new-category').addClass('hidden');
