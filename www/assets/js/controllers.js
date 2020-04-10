@@ -31,6 +31,19 @@ myApp.controllers = {
             })
         };
 
+        // Set button functionality to push delate all outdated tasks.
+        page.querySelector('[component="button/delete-all-outdated-tasks"').onclick = function() {
+            ons.notification.confirm(
+                {
+                    title: 'Supprimer toutes les tâches passées ?',
+                    message: 'Toutes les tâches passées seront supprimées.',
+                    buttonLabels: ['Annuler', 'Valider']
+                }
+            ).then((index) => {
+                if (index === 1) myApp.services.tasks.removeAllOutdated();
+            })
+        };
+
         // Change tabbar animation depending on platform.
         page.querySelector('#myTabbar').setAttribute('animation', ons.platform.isAndroid() ? 'slide' : 'none');
     },

@@ -11,18 +11,21 @@ myApp.services = {
 
         // Creates a new task and attaches it to the pending task list.
         create: function (data) {
+            let isOutdated = (Date.parse(data.deadline) < new Date().getTime()) ? '&#8987' : '';
+
+
             // Task item template.
             var taskItem = ons.createElement(
-                '<ons-list-item tappable component="task" category="' + myApp.services.categories.parseId(data.category) + '">' +
-                '<label class="left">' +
-                '<ons-checkbox></ons-checkbox>' +
-                '</label>' +
-                '<div class="center">' +
-                data.title +
-                '</div>' +
-                '<div class="right">' +
-                '<ons-icon style="color: grey; padding-left: 4px" icon="ion-ios-trash-outline, material:md-delete"></ons-icon>' +
-                '</div>' +
+                `<ons-list-item tappable ${isOutdated !== "" ? "status=outdated" : ""} component="task" category="' + myApp.services.categories.parseId(data.category) + '">` +
+                    '<label class="left">' +
+                        '<ons-checkbox></ons-checkbox>' +
+                    '</label>' +
+                    '<div class="center">' +
+                        data.title +
+                    '</div>' +
+                    '<div class="right">' +
+                    '   <ons-icon style="color: grey; padding-left: 4px" icon="ion-ios-trash-outline, material:md-delete"></ons-icon>' +
+                    '</div>' +
                 '</ons-list-item>'
             );
 
@@ -138,6 +141,14 @@ myApp.services = {
         removeAll: function () {
             let tasks = document.querySelectorAll('[component="task"]');
             tasks.forEach((task) => myApp.services.tasks.remove(task));
+        },
+
+        removeAllOutdated: function () {
+            let tasks = document.querySelectorAll('[component="task"]');
+            tasks.forEach( (task) =>  {
+                if ($(task).attr('status') === 'outdated')
+                    myApp.services.tasks.remove(task);
+            })
         }
     },
 
@@ -149,8 +160,8 @@ myApp.services = {
         categories: [],
 
         // Creates a new category and attaches it to the custom category list.
-        create: function(categoryLabel) {
-            if (!this.categories.includes(categoryLabel)){
+        create: function (categoryLabel) {
+            if (!this.categories.includes(categoryLabel)) {
                 this.categories.push(categoryLabel);
 
                 var categoryId = myApp.services.categories.parseId(categoryLabel);
@@ -159,7 +170,7 @@ myApp.services = {
                 var categoryItem = ons.createElement(
                     '<ons-list-item tappable category-id="' + categoryId + '">' +
                     '<div class="left">' +
-                    '<ons-radio name="categoryGroup" input-id="radio-'  + categoryId + '"></ons-radio>' +
+                    '<ons-radio name="categoryGroup" input-id="radio-' + categoryId + '"></ons-radio>' +
                     '</div>' +
                     '<label class="center" for="radio-' + categoryId + '">' +
                     (categoryLabel || 'No category') +
@@ -168,12 +179,11 @@ myApp.services = {
                     '<ons-icon style="color: grey; padding-left: 4px" icon="ion-ios-trash-outline, material:md-delete"></ons-icon>' +
                     '</div>' +
                     '</ons-list-item>'
-
                 );
 
-                categoryItem.querySelector('.right').onclick = function() {
+                categoryItem.querySelector('.right').onclick = function () {
                     let tasks = document.querySelectorAll('[component="task"]');
-                    tasks.forEach( (task) =>  {
+                    tasks.forEach((task) => {
                         if ($(task).attr('category') === categoryId)
                             myApp.services.tasks.remove(task);
                     })
