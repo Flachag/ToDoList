@@ -146,28 +146,47 @@ myApp.services = {
     ////////////////////
     categories: {
 
+        categories: [],
+
         // Creates a new category and attaches it to the custom category list.
-        create: function (categoryLabel) {
-            var categoryId = myApp.services.categories.parseId(categoryLabel);
+        create: function(categoryLabel) {
+            if (!this.categories.includes(categoryLabel)){
+                this.categories.push(categoryLabel);
 
-            // Category item template.
-            var categoryItem = ons.createElement(
-                '<ons-list-item tappable category-id="' + categoryId + '">' +
-                '<div class="left">' +
-                '<ons-radio name="categoryGroup" input-id="radio-' + categoryId + '"></ons-radio>' +
-                '</div>' +
-                '<label class="center" for="radio-' + categoryId + '">' +
-                (categoryLabel || 'No category') +
-                '</label>' +
-                '</ons-list-item>'
-            );
+                var categoryId = myApp.services.categories.parseId(categoryLabel);
 
-            // Adds filtering functionality to this category item.
-            myApp.services.categories.bindOnCheckboxChange(categoryItem);
+                // Category item template.
+                var categoryItem = ons.createElement(
+                    '<ons-list-item tappable category-id="' + categoryId + '">' +
+                    '<div class="left">' +
+                    '<ons-radio name="categoryGroup" input-id="radio-'  + categoryId + '"></ons-radio>' +
+                    '</div>' +
+                    '<label class="center" for="radio-' + categoryId + '">' +
+                    (categoryLabel || 'No category') +
+                    '</label>' +
+                    '<div class="right">' +
+                    '<ons-icon style="color: grey; padding-left: 4px" icon="ion-ios-trash-outline, material:md-delete"></ons-icon>' +
+                    '</div>' +
+                    '</ons-list-item>'
 
-            // Attach the new category to the corresponding list.
-            document.querySelector('#custom-category-list').appendChild(categoryItem);
+                );
+
+                categoryItem.querySelector('.right').onclick = function() {
+                    let tasks = document.querySelectorAll('[component="task"]');
+                    tasks.forEach( (task) =>  {
+                        if ($(task).attr('category') === categoryId)
+                            myApp.services.tasks.remove(task);
+                    })
+                };
+
+                // Adds filtering functionality to this category item.
+                myApp.services.categories.bindOnCheckboxChange(categoryItem);
+
+                // Attach the new category to the corresponding list.
+                document.querySelector('#custom-category-list').appendChild(categoryItem);
+            }
         },
+
 
         // On task creation/update, updates the category list adding new categories if needed.
         updateAdd: function (categoryLabel) {

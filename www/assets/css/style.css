@@ -25,7 +25,10 @@ ons-splitter-side[side="left"][animation="overlay"] {
   color: #666
 }
 
-
+.hidden{
+  visibility: hidden;
+  position: absolute;
+}
 
 /********************
  *** Animation CSS ***

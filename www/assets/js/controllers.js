@@ -81,6 +81,7 @@ myApp.controllers = {
                 addInStorage(newTask);
             };
         });
+        this.addCategoriesInList();
     },
 
     ////////////////////////////////
@@ -135,5 +136,28 @@ myApp.controllers = {
                 ons.notification.alert('Le titre ne peut pas être vide.');
             }
         };
+        this.addCategoriesInList();
+    },
+
+    addCategoriesInList: function () {
+        let categories = ['Nouvelle Catégorie'].concat(myApp.services.categories.categories);
+        let list = $('#categories-list');
+        categories.forEach(current => {
+            let option = $(`<option value=${current}>`);
+            option.text(current);
+
+            list.click(e => {
+                let options = list.prop("options");
+                let selectedOption = options[list.prop("selectedIndex")].value;
+                if (selectedOption === 'Nouvelle'){
+                    $('#new-category').removeClass('hidden');
+                } else {
+                    $('#new-category').addClass('hidden');
+                    $('#category-input').prop("value", selectedOption);
+                }
+            });
+
+            list.find('select').append(option);
+        });
     }
 };
