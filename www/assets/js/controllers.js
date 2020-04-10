@@ -95,6 +95,7 @@ myApp.controllers = {
         page.querySelector('#title-input').value = element.data.title;
         page.querySelector('#category-input').value = element.data.category;
         page.querySelector('#description-input').value = element.data.description;
+        page.querySelector('#deadline-input').value = element.data.deadline;
         page.querySelector('#highlight-input').checked = element.data.highlight;
         page.querySelector('#urgent-input').checked = element.data.urgent;
 
@@ -118,9 +119,10 @@ myApp.controllers = {
                                 title: newTitle,
                                 category: page.querySelector('#category-input').value,
                                 description: page.querySelector('#description-input').value,
+                                deadline: page.querySelector('#deadline-input').value,
                                 urgent: element.data.urgent,
                                 status: page.data.element.data.status,
-                                highlight: page.querySelector('#highlight-input').checked
+                                highlight: page.querySelector('#highlight-input').checked,
                             }
                         );
 

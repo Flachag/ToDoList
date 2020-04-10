@@ -225,8 +225,6 @@ myApp.services = {
             var allItems = categoryId === null;
 
             categoryItem.updateCategoryView = function () {
-                var query = '[category="' + (categoryId || '') + '"]';
-
                 var taskItems = document.querySelectorAll('#tabbarPage ons-list-item');
                 for (var i = 0; i < taskItems.length; i++) {
                     taskItems[i].style.display = (allItems || taskItems[i].getAttribute('category') === categoryId) ? '' : 'none';
@@ -281,7 +279,8 @@ myApp.services = {
             description: 'description 1',
             highlight: false,
             urgent: true,
-            status: "pending"
+            status: "pending",
+            deadline: '2000-04-08',
         },
         {
             title: 'Rendu intermédiaire',
@@ -289,7 +288,8 @@ myApp.services = {
             description: 'description 2',
             highlight: false,
             urgent: false,
-            status: "pending"
+            status: "pending",
+            deadline: '2020-04-10'
         }
     ]
 };
