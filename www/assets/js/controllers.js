@@ -179,7 +179,7 @@ myApp.controllers = {
         let categories = ['Nouvelle Catégorie'].concat(myApp.services.categories.categories);
         let list = $('#categories-list');
         categories.forEach(current => {
-            let option = $(`<option value=""${current}>`);
+            let option = $(`<option value=${current}>`);
             option.text(current);
 
             list.click(e => {
